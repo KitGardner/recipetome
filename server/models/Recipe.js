@@ -16,8 +16,9 @@ const Recipe = new Schema(
     createdBy: { type: String, required: true },
     ingredients: [{ type: String }],
     directions: [{ type: String }],
+    favorited: [{ type: String }],
     comments: [CommentSchema],
-    likes: [{ type: ObjectId }]
+    likes: [{ type: String }]
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );

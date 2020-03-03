@@ -18,6 +18,7 @@ const Recipe = new Schema(
     directions: [{ type: String }],
     favorited: [{ type: String }],
     comments: [CommentSchema],
+    imgUrl: { type: String },
     likes: [{ type: String }]
   },
   { timestamps: true, toJSON: { virtuals: true } }

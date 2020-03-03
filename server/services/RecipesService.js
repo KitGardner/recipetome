@@ -14,12 +14,6 @@ class RecipesService {
   }
   async getAllRecipes(query = {}) {
     let recipes = await dbContext.Recipe.find({ ...query, deleted: false });
-
-    for (const recipe of recipes) {
-      recipe.favorited = await dbContext.Favorite.find({ Recipe: recipe.id }).select("User");
-      recipe.likes = await dbContext.Like.find({ Recipe: recipe.id }).select("User");
-    }
-
     return recipes;
   }
 

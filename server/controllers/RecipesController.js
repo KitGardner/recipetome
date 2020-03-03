@@ -13,11 +13,9 @@ export class RecipesController extends BaseController {
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(auth0Provider.hasRoles("User"))
       .post("", this.createRecipe)
-      .post("/:recipeId/favorite", this.favoriteRecipe)
       .post("/:recipeId/like", this.likeRecipe)
       .put("/:id", this.updateRecipe)
       .delete("/:id", this.deleteRecipe)
-      .delete("/:recipeId/favorite", this.unfavoriteRecipe)
       .delete("/:recipeId/like", this.unLikeRecipe);
   }
 
@@ -54,24 +52,6 @@ export class RecipesController extends BaseController {
       res.send(updatedRecipe);
     } catch (error) {
       next(error);
-    }
-  }
-
-  async favoriteRecipe(req, res, next) {
-    try {
-      let favoritingResult = await recipesService.favoriteRecipe(req.params.recipeId, req.userInfo);
-      res.send(favoritingResult);
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  async unfavoriteRecipe(req, res, next) {
-    try {
-      let unfavoritingResult = await recipesService.unFavoriteRecipe(req.params.recipeId, req.userInfo);
-      res.send(unfavoritingResult);
-    } catch (error) {
-      next(error)
     }
   }
 

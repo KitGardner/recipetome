@@ -4,6 +4,7 @@ export default class Recipe {
     this.name = recipeData.name;
     this.description = recipeData.description;
     this.createdBy = recipeData.createdBy;
+    this.creatorImgUrl = recipeData.creatorImgUrl;
     this.ingredients = recipeData.ingredients;
     this.direction = recipeData.direction;
     this.favorited = recipeData.favorited;
@@ -17,29 +18,54 @@ export default class Recipe {
   }
 
   get ListTemplate() {
-    let listTemplate = `        
-  <div class="col-3">
-    <div>
-      <img src="http://placehold.it/200x200" alt="">
-      <h5>${this.name}</h5>
-      <p>Created By: ${this.createdBy}</p>
-      <p>${this.description}</p>`;
-
-    if (this.ingredients.length > 0) {
-      let ingredientBaseTemp = "<ul>Ingredients";
-
-      this.ingredients.forEach(ingredient => {
-        ingredientBaseTemp += `<li>${ingredient}</li>`
-      });
-
-      ingredientBaseTemp += "</ul>";
-      listTemplate += ingredientBaseTemp;
-    }
+    let listTemplate = `
+    <div class="col-3 pb-5">
+    <div class="row">
+      <div class="col-md-12 recipe-page">
+        <div class="row">
+          <div class="col-md-12  d-flex justify-content-center">
+            <img src="http://placehold.it/350x200" alt="">
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-12">
+            <h5 class="recipe-title">${this.name}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h5>Created By: <img src="http://placehold.it/50x50" alt=""> User</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p class="white">${this.description}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h5>Ingredients</h5>
+          </div>
+          <div class="col-md-12 d-flex ">
+            <ul class="horizontal-list">`;
+    this.ingredients.forEach(ingredient => {
+      listTemplate += `<li>${ingredient}</li>`
+    });
 
     listTemplate += `
-      <button>View Recipe</button>
-      <p>like</p>
-      <p>favorite</p>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <button class="btn btn-primary mt-3 mb-n5">View Recipe</button>
+          </div>
+          <div class="col-md-4 d-flex justify-content-between">
+            <i class="fa fa-thumbs-up icon blue"></i>
+            <i class="fa fa-heart icon red"></i>
+          </div>
+        </div>
+      </div>
     </div>
   </div>`;
 

@@ -17,7 +17,7 @@ function drawRecipes() {
 
 export default class RecipesController {
   constructor() {
-    //Auth0Provider.onAuth(this.getRecipes);
+    Auth0Provider.onAuth(this.printUser);
     this.getRecipes();
     store.subscribe("recipes", drawRecipes);
   }
@@ -30,6 +30,11 @@ export default class RecipesController {
       console.log(error);
 
     }
+  }
+
+  async printUser() {
+    console.log(Auth0Provider.user);
+    console.log(Auth0Provider.userInfo);
   }
 
   async createRecipe() {

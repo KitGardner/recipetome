@@ -15,11 +15,16 @@ function drawRecipes() {
 
 }
 
+function drawActiveRecipe() {
+  document.getElementById("pageContent").innerHTML = store.State.activeRecipe.CreateTemplate;
+}
+
 export default class RecipesController {
   constructor() {
     Auth0Provider.onAuth(this.printUser);
     this.getRecipes();
     store.subscribe("recipes", drawRecipes);
+    store.subscribe("activeRecipe", drawActiveRecipe);
   }
 
   async getRecipes() {
@@ -37,11 +42,30 @@ export default class RecipesController {
     console.log(Auth0Provider.userInfo);
   }
 
-  async createRecipe() {
+  async createRecipe(event) {
     try {
-      await resource.post("api/recipes", {
-        title: "ScrambledEggs"
-      });
+      debugger;
+      event.preventDefault();
+
+      let form = event.target;
+      let recipeData = {};
+      recipeData.imgUrl = form.imgUrl.value;
+      recipeData.name = form.name.value;
+      recipeData.description = form.description.value;
+      recipeData.ingredients = form.ingredients.value;
+      recipeData.directions = form.directions.value;
+
+      await recipesService.createRecipe(recipeData);
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  async openRecipeForm() {
+    try {
+      await recipesService.initializeNewRecipe();
     } catch (error) {
       console.log(error);
 

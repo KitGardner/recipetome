@@ -2,14 +2,16 @@
  * @type {{[x:string]: any}}
  */
 let _state = {
-  recipes: []
+  recipes: [],
+  activeRecipe: {}
 };
 
 /** Collection of listeners to be called based on keyed state changes
  * @type {{[x:string]: function[]}}
  */
 let _listeners = {
-  recipes: []
+  recipes: [],
+  activeRecipe: []
 };
 
 // NOTE You should not need to change the code from this point down

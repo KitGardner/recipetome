@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext.js";
 import { BadRequest, Unexpected, UnAuthorized } from "../utils/Errors.js";
+import { profilesService } from "./ProfilesService.js";
 
 class RecipesService {
 
@@ -18,20 +19,19 @@ class RecipesService {
   }
 
   async createRecipe(recipeData, userInfo) {
+    let user = await profilesService.getProfile(userInfo);
+    if (!user.subs.includes(userInfo.sub)) {
+      throw new BadRequest("The requesting user does not match the user info provided");
+    }
+
     let createdRecipe = await dbContext.Recipe.create({
       ...recipeData,
-      createdBy: userInfo.email
+      createdBy: user.id,
     });
 
-    return {
-      name: createdRecipe.name,
-      description: createdRecipe.description,
-      ingredients: createdRecipe.ingredients,
-      directions: createdRecipe.directions,
-      createdBy: createdRecipe.email,
-      comments: [],
-      likes: []
-    };
+    let fullRecipe = await dbContext.Recipe.findById(createdRecipe.id).populate("createdBy", ["name", "picture"]);
+
+    return fullRecipe;
   }
   async updateRecipe(recipeId, recipeData, userInfo) {
     let existingRecipe = await dbContext.Recipe.findById(recipeId);

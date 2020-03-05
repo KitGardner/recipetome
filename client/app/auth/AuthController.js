@@ -23,9 +23,13 @@ function drawUser() {
   document.getElementById("authbar").innerHTML = template;
 }
 
+function setAuthenticated() {
+}
+
 export class AuthController {
   constructor() {
     Auth0Provider.onAuth(drawUser);
+    Auth0Provider.onAuth(setAuthenticated);
     Auth0Provider.onUnAuth(drawUser);
     initializeAuth();
     drawUser();

@@ -91,9 +91,9 @@ export default class Recipe {
           </div>
           <div class="col-md-4 d-flex justify-content-between">`;
     if (this.userLiked) {
-      listTemplate += `<i class="fa fa-thumbs-up icon blue" onclick="app.likesController.unLikeRecipe('${this.Id}')"></i>`;
+      listTemplate += `<i class="fa fa-thumbs-up icon blue" onclick="app.likesController.unLikeRecipe('${this.Id}')">${this.likes.length}</i>`;
     } else {
-      listTemplate += `<i class="fa fa-thumbs-up icon" onclick="app.likesController.likeRecipe('${this.Id}')"></i>`
+      listTemplate += `<i class="fa fa-thumbs-up icon" onclick="app.likesController.likeRecipe('${this.Id}')">${this.likes.length}</i>`
     }
 
     if (this.userFavorited) {

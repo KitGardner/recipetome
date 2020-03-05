@@ -4,7 +4,12 @@
 let _state = {
   recipes: [],
   activeRecipe: {},
-  likes: []
+  likes: [],
+  userFavorites: [],
+  recipesLoaded: false,
+  likesLoaded: false,
+  userFavoritesLoaded: false,
+  userAuthenticated: false,
 };
 
 /** Collection of listeners to be called based on keyed state changes
@@ -12,7 +17,13 @@ let _state = {
  */
 let _listeners = {
   recipes: [],
-  activeRecipe: []
+  activeRecipe: [],
+  likes: [],
+  userFavorites: [],
+  recipesLoaded: [],
+  likesLoaded: [],
+  userFavoritesLoaded: [],
+  userAuthenticated: []
 };
 
 // NOTE You should not need to change the code from this point down

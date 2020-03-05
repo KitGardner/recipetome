@@ -66,7 +66,7 @@ class RecipesService {
     if (likes) {
       let recipeIds = likes.map(l => l.Recipe);
       recipeIds.forEach(id => {
-        let likedUsers = likes.map(l => l.User.name);
+        let likedUsers = likes.filter(l => l.Recipe == id).map(l => l.User.name);
         let recipeIndex = visibleRecipes.findIndex(r => r.Id == id);
         visibleRecipes[recipeIndex].likes = visibleRecipes[recipeIndex].likes.concat(likedUsers);
         visibleRecipes[recipeIndex].setUserLiked(userInfo.email);

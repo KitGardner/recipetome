@@ -36,6 +36,8 @@ export default class Recipe {
   setUserLiked(email) {
     if (this.likes.includes(email)) {
       this.userLiked = true;
+    } else {
+      this.userLiked = false;
     }
   }
 
@@ -89,9 +91,9 @@ export default class Recipe {
           </div>
           <div class="col-md-4 d-flex justify-content-between">`;
     if (this.userLiked) {
-      listTemplate += `<i class="fa fa-thumbs-up icon blue"></i>`;
+      listTemplate += `<i class="fa fa-thumbs-up icon blue" onclick="app.likesController.unLikeRecipe('${this.Id}')"></i>`;
     } else {
-      listTemplate += `<i class="fa fa-thumbs-up icon"></i>`
+      listTemplate += `<i class="fa fa-thumbs-up icon" onclick="app.likesController.likeRecipe('${this.Id}')"></i>`
     }
 
     if (this.userFavorited) {

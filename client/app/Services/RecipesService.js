@@ -2,6 +2,7 @@ import { resource } from "../resource.js";
 import Recipe from "../Models/Recipe.js";
 import store from "../store.js";
 import favoritesService from "./FavoritesService.js";
+import likesService from "./LikesService.js";
 
 class RecipesService {
 
@@ -43,9 +44,10 @@ class RecipesService {
     let visibleRecipes = store.State.recipes;
 
     let favorites = await favoritesService.getUserFavorites();
-    debugger;
+    await likesService.getAllLikes();
+    let likes = store.State.likes;
     if (favorites.recipeIds && favorites.recipeIds.length > 0) {
-      let favoritedRecipes = store.State.recipes.filter(r => favorites.recipeIds.includes(r.Id));
+      let favoritedRecipes = visibleRecipes.filter(r => favorites.recipeIds.includes(r.Id));
 
       if (favoritedRecipes.length == 0) {
         throw new Error("Could not find any of the favorited recipes");
@@ -60,6 +62,16 @@ class RecipesService {
     visibleRecipes.forEach(recipe => {
       recipe.setCanDelete(userInfo.email);
     })
+
+    if (likes) {
+      let recipeIds = likes.map(l => l.Recipe);
+      recipeIds.forEach(id => {
+        let likedUsers = likes.map(l => l.User.name);
+        let recipeIndex = visibleRecipes.findIndex(r => r.Id == id);
+        visibleRecipes[recipeIndex].likes = visibleRecipes[recipeIndex].likes.concat(likedUsers);
+        visibleRecipes[recipeIndex].setUserLiked(userInfo.email);
+      })
+    }
 
     store.commit("recipes", visibleRecipes);
   }

@@ -129,6 +129,10 @@ class RecipesService {
     let existingRecipe = await dbContext.Recipe.findById(recipeId);
     let user = await profilesService.getProfile(userInfo);
 
+    if (!user.subs.includes(userInfo.sub)) {
+      throw new BadRequest("The requesting user does not match the user info provided");
+    }
+
     if (!existingRecipe) {
       throw new BadRequest("Did not find a recipe with the Id " + recipeId)
     }

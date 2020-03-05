@@ -4,7 +4,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const Like = new Schema(
   {
-    User: { type: String, required: true },
+    User: { type: ObjectId, required: true, ref: "Profile" },
     Recipe: { type: ObjectId, ref: "Recipe", required: true }
   },
   { timestamps: true, toJSON: { virtuals: true } }

@@ -2,7 +2,6 @@ import express from "express";
 import BaseController from "../utils/BaseController";
 import auth0Provider from "@bcwdev/auth0Provider";
 import recipesService from "../services/RecipesService.js";
-import { profilesService } from "../services/ProfilesService";
 
 export class RecipesController extends BaseController {
   constructor() {
@@ -14,10 +13,8 @@ export class RecipesController extends BaseController {
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(auth0Provider.hasRoles("User"))
       .post("", this.createRecipe)
-      .post("/:recipeId/like", this.likeRecipe)
       .put("/:id", this.updateRecipe)
-      .delete("/:id", this.deleteRecipe)
-      .delete("/:recipeId/like", this.unLikeRecipe);
+      .delete("/:id", this.deleteRecipe);
   }
 
   async getAllRecipes(req, res, next) {
@@ -53,24 +50,6 @@ export class RecipesController extends BaseController {
       res.send(updatedRecipe);
     } catch (error) {
       next(error);
-    }
-  }
-
-  async likeRecipe(req, res, next) {
-    try {
-      let favoritingResult = await recipesService.LikeRecipe(req.params.recipeId, req.userInfo);
-      res.send(favoritingResult);
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  async unLikeRecipe(req, res, next) {
-    try {
-      let unfavoritingResult = await recipesService.unLikeRecipe(req.params.recipeId, req.userInfo);
-      res.send(unfavoritingResult);
-    } catch (error) {
-      next(error)
     }
   }
 

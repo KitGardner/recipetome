@@ -3,7 +3,8 @@
  */
 let _state = {
   recipes: [],
-  activeRecipe: {}
+  activeRecipe: {},
+  likes: []
 };
 
 /** Collection of listeners to be called based on keyed state changes

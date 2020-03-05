@@ -17,7 +17,7 @@ export class FavoritesController extends BaseController {
 
   async getUserFavorites(req, res, next) {
     try {
-      let favorites = await favoritesService.getUserFavorites(req.user.sub);
+      let favorites = await favoritesService.getUserFavorites(req.userInfo);
       res.send(favorites);
     } catch (error) {
       next(error);
@@ -26,7 +26,7 @@ export class FavoritesController extends BaseController {
 
   async favoriteRecipe(req, res, next) {
     try {
-      let favoritingResult = await favoritesService.favoriteRecipe(req.body, req.user.sub);
+      let favoritingResult = await favoritesService.favoriteRecipe(req.body, req.userInfo);
       res.send(favoritingResult);
     } catch (error) {
       next(error)
@@ -35,7 +35,7 @@ export class FavoritesController extends BaseController {
 
   async unfavoriteRecipe(req, res, next) {
     try {
-      let unfavoritingResult = await favoritesService.unFavoriteRecipe(req.params.recipeId, req.user.sub);
+      let unfavoritingResult = await favoritesService.unFavoriteRecipe(req.params.recipeId, req.userInfo);
       res.send(unfavoritingResult);
     } catch (error) {
       next(error)

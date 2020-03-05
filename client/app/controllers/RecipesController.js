@@ -1,4 +1,3 @@
-import { resource } from "../resource.js";
 import { Auth0Provider } from "../auth/Auth0Provider.js"
 import recipesService from "../Services/RecipesService.js";
 import store from "../store.js";
@@ -21,7 +20,7 @@ function drawActiveRecipe() {
 
 export default class RecipesController {
   constructor() {
-    Auth0Provider.onAuth(this.printUser);
+    Auth0Provider.onAuth(this.setUserData);
     this.getRecipes();
     store.subscribe("recipes", drawRecipes);
     store.subscribe("activeRecipe", drawActiveRecipe);
@@ -30,16 +29,10 @@ export default class RecipesController {
   async getRecipes() {
     try {
       await recipesService.getRecipes();
-      //await resource.post("api/recipes", data) syntax for sending data
     } catch (error) {
       console.log(error);
 
     }
-  }
-
-  async printUser() {
-    console.log(Auth0Provider.user);
-    console.log(Auth0Provider.userInfo);
   }
 
   async createRecipe(event) {
@@ -57,6 +50,24 @@ export default class RecipesController {
 
       await recipesService.createRecipe(recipeData);
 
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  async deleteRecipe(id) {
+    try {
+      await recipesService.deleteRecipe(id);
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  async setUserData() {
+    try {
+      await recipesService.setUserData(Auth0Provider.userInfo);
     } catch (error) {
       console.log(error);
 

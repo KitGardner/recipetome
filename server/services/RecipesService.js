@@ -14,7 +14,7 @@ class RecipesService {
     return recipe;
   }
   async getAllRecipes(query = {}) {
-    let recipes = await dbContext.Recipe.find({ ...query, deleted: false });
+    let recipes = await dbContext.Recipe.find({ ...query, deleted: false }).populate("createdBy", ["name", "picture"]);
     return recipes;
   }
 
@@ -127,12 +127,13 @@ class RecipesService {
 
   async deleteRecipe(recipeId, userInfo) {
     let existingRecipe = await dbContext.Recipe.findById(recipeId);
+    let user = await profilesService.getProfile(userInfo);
 
     if (!existingRecipe) {
       throw new BadRequest("Did not find a recipe with the Id " + recipeId)
     }
 
-    if (existingRecipe.createdBy != userInfo.email) {
+    if (existingRecipe.createdBy != user.id) {
       throw new UnAuthorized("You are not the creator of this recipe and are unable to delete it");
     }
 
@@ -142,7 +143,9 @@ class RecipesService {
       throw new Unexpected("An unexpected error occurred in the server");
     }
 
-    return "Recipe deleted successfully";
+    return {
+      id: updatedRecipe.id
+    };
   }
 
 }

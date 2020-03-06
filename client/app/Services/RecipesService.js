@@ -5,7 +5,6 @@ import favoritesService from "./FavoritesService.js";
 import likesService from "./LikesService.js";
 
 class RecipesService {
-
   initializeNewRecipe() {
     let newRecipe = new Recipe();
     store.commit("activeRecipe", newRecipe);
@@ -15,6 +14,7 @@ class RecipesService {
 
     let newRecipe = new Recipe(createdRecipe);
     newRecipe.setCanDelete(createdRecipe.createdBy.name);
+    newRecipe.setCanEdit(createdRecipe.createdBy.name);
     store.State.recipes.push(newRecipe);
     store.commit("recipes", store.State.recipes);
   }
@@ -24,6 +24,27 @@ class RecipesService {
     console.log(data);
     let recipes = data.map(d => new Recipe(d))
     store.commit("recipes", recipes);
+  }
+
+  async updateRecipe(recipeData) {
+    debugger;
+    let data = await resource.put("api/recipes/" + recipeData.Id, recipeData);
+
+    debugger;
+    let newRecipe = new Recipe(data);
+    let recipeIndex = store.State.recipes.findIndex(r => r.Id == recipeData.Id);
+    let oldRecipe = store.State.recipes[recipeIndex];
+
+    newRecipe.favorited = oldRecipe.favorited;
+    newRecipe.likes = oldRecipe.likes;
+    newRecipe.setCanDelete(newRecipe.createdBy);
+    newRecipe.setCanEdit(newRecipe.createdBy);
+    newRecipe.setIsFavorited(newRecipe.createdBy);
+    newRecipe.setShowFavoriteIcon(true);
+    newRecipe.setUserLiked(newRecipe.createdBy);
+
+    store.State.recipes.splice(recipeIndex, 1, newRecipe);
+    store.commit("recipes", store.State.recipes);
   }
 
   async deleteRecipe(id) {
@@ -44,6 +65,9 @@ class RecipesService {
     let visibleRecipes = store.State.recipes;
 
     let favorites = await favoritesService.getUserFavorites();
+    visibleRecipes.forEach(recipe => {
+      recipe.setShowFavoriteIcon(true)
+    });
     await likesService.getAllLikes();
     let likes = store.State.likes;
     if (favorites.recipeIds && favorites.recipeIds.length > 0) {
@@ -61,6 +85,7 @@ class RecipesService {
 
     visibleRecipes.forEach(recipe => {
       recipe.setCanDelete(userInfo.email);
+      recipe.setCanEdit(userInfo.email);
     })
 
     if (likes) {

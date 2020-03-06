@@ -20,10 +20,39 @@
   <main>
     <h1>Welcome to Recipe Tome: This is where you put Grandma's secret Recipe!</h1>
     <div class="container-fluid">
-      <div class="row">
-        <button onclick="app.recipesController.openRecipeForm()">Add New Recipe</button>
+      <div class="row" id="ViewButtons">
       </div>
       <div id="pageContent" class="row">
+      </div>
+      <div class="col-md-12" id="recipeForm" hidden>
+        <form onsubmit="app.recipesController.createRecipe(event)" id="createForm">
+          <img src="http://placehold.it/350x200" alt="">
+          <div class="input-group">
+            <label for="Id"></label>
+            <input type="text" name="Id" hidden>
+          </div>
+          <div class="input-group">
+            <label for="imgUrl">Recipe Image URL: </label>
+            <input type="text" name="imgUrl" class="input-field">
+          </div>
+          <div class="input-group">
+            <label for="name">Recipe Name: </label>
+            <input type="text" name="name" class="input-field">
+          </div>
+          <div class="input-group">
+            <label for="description">Recipe Description: </label>
+            <input type="text" name="description" class="input-field">
+          </div>
+          <div class="input-group">
+            <label for="ingredients">Ingredients: </label>
+            <textarea style="display: block;" name="ingredients" id="" cols="30" rows="10"></textarea>
+          </div>
+          <div class="input-group">
+            <label for="directions">Directions: </label>
+            <textarea style="display: block;" name="directions" id="" cols="60" rows="10"></textarea>
+          </div>
+          <button type="submit">Save Recipe</button>
+        </form>
       </div>
     </div>
   </main>
